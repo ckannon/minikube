@@ -132,7 +132,7 @@ RUN echo "Installing cri-dockerd" && \
 # install system requirements from the regular distro repositories
 RUN clean-install \
     lz4 \
-    gnupg \ 
+    gnupg \
     sudo \
     openssh-server \
     dnsutils \
@@ -198,6 +198,10 @@ RUN export ARCH=$(dpkg --print-architecture | sed 's/ppc64el/ppc64le/') && \
     mkdir -p /etc/tmpfiles.d && \
     echo "d /run/podman 0770 root podman" > /etc/tmpfiles.d/podman.conf && \
     systemd-tmpfiles --create; fi
+
+# install version.json
+ARG VERSION_JSON
+RUN echo "${VERSION_JSON}" > /version.json
 
 # automount service
 COPY deploy/kicbase/automount/minikube-automount /usr/sbin/minikube-automount
